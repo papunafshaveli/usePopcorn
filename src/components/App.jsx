@@ -5,7 +5,7 @@ import NavBar from "./NavBar";
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import Search from "./Search";
-import NumResults from "./numResults";
+import NumResults from "./NumResults";
 import Box from "./Box";
 import WatchedSummary from "./WatchedSummary";
 import WatchedMoviesList from "./WatchedMoviesList";

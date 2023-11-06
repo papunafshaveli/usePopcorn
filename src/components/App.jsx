@@ -13,7 +13,7 @@ import Loader from "./Loader";
 import MovieList from "./MovieList";
 import ErrorMessage from "./ErrorMessage";
 import MovieDetails from "./MovieDetails";
-
+//
 const tempWatchedData = [
   {
     imdbID: "tt1375666",

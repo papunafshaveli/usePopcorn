@@ -9,11 +9,16 @@ export default function MovieDetails({
   onCloseMovie,
   KEY,
   onAddWatched,
+  watched,
 }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
 
+  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedUserRatin = watched.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
   const {
     Title: title,
     Year: year,
@@ -41,6 +46,23 @@ export default function MovieDetails({
     onCloseMovie();
   };
 
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+        }
+      }
+
+      document.addEventListener("keydown", callback);
+
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie]
+  );
+
   useEffect(() => {
     const getMovieDetails = async () => {
       setIsLoading(true);
@@ -53,6 +75,15 @@ export default function MovieDetails({
     };
     getMovieDetails();
   }, [KEY, selectedId]);
+
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+
+    return () => {
+      document.title = "usePopcorn";
+    };
+  }, [title]);
   return (
     <div className="details">
       {isLoading ? (
@@ -71,22 +102,33 @@ export default function MovieDetails({
               </p>
               <p>{genre}</p>
               <p>
-                <span>spa⭐️</span>
+                <span>⭐️</span>
                 {imdbRating} IMDB Rating
               </p>
             </div>
           </header>
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={24}
-                onSetRating={setUserRating}
-              />
-
-              <button className="btn-add" onClick={handleAdd}>
-                + Add to list
-              </button>
+              {!isWatched ? (
+                <>
+                  {" "}
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAdd}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You`ve already rated this movie with {watchedUserRatin}{" "}
+                  <span>⭐️</span>{" "}
+                </p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

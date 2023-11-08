@@ -13,15 +13,16 @@ import Loader from "./Loader";
 import MovieList from "./MovieList";
 import ErrorMessage from "./ErrorMessage";
 import MovieDetails from "./MovieDetails";
+import { useLocalStorageState } from "../hooks/useLocalStorageState";
 //
 
 function App() {
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  const [watched, setWatched] = useLocalStorageState([], "watched");
 
   const KEY = "36a92b3f";
 
